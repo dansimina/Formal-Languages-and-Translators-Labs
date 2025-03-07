@@ -1,0 +1,7 @@
+[declaratii,ex macro
+%%
+[REGEX
+%%
+[COD in C
+
+TEST:
