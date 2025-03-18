@@ -1,0 +1,7 @@
+void f (int a, int                     b) {
+int x = y +           z;
+                            return 0;
+                            if(a > b) {
+                                printf();
+                            }
+}

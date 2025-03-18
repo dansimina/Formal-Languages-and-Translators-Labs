@@ -32,12 +32,13 @@ return                                  printf("RETURN ");
 
 [ \t]+                                  ;
 
-[\n][}]                                   {
+[\n][ \t]*[}]                                 {
+                                            tabs--;
                                             printf("\n");
-                                            for(int i = 0; i < tabs - 1; i++) {
+                                            for(int i = 0; i < tabs; i++) {
                                                 printf("\t");
                                             }
-                                            printf("BLOCK_END \n");
+                                            printf("BLOCK_END");
                                         }
 
 [\n]                                    {
