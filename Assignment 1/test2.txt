@@ -1,0 +1,10 @@
+public class Noob(){
+    private string name;
+    private int age;
+
+    public Noob(){
+        name = "Dan";
+        age = 120;
+    }
+
+}
