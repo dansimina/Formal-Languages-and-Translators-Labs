@@ -1,10 +1,6 @@
-public class Noob(){
-    private string name;
-    private int age;
+public int functie( int a, int b8, int c9){
+    a = a - 1;
+    b8 = c9 + a;
 
-    public Noob(){
-        name = "Dan";
-        age = 120;
-    }
-
+    return functie(a, b8, c9);
 }

@@ -826,7 +826,7 @@ printf("TYPE ");
 case 5:
 YY_RULE_SETUP
 #line 21 "assignment1.l"
-{printf("FUNCTION_NAME FN_PARAMS_START ");}
+{printf("FUNCTION_NAME "); yyless(yyleng - 1);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP

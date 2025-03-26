@@ -17,7 +17,7 @@ Digit               [0-9]
 
 {type}                                  printf("TYPE ");
 
-{Character}{Alphanumeric}*[ \t]*[(]     {printf("FUNCTION_NAME FN_PARAMS_START ");}
+{Character}{Alphanumeric}*[ \t]*[(]     {printf("FUNCTION_NAME "); yyless(yyleng - 1);}
 
 [(]                                     printf("FN_PARAMS_START ");
 [)]                                     printf("FN_PARAMS_END ");
