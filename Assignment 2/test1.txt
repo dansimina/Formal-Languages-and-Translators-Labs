@@ -1,0 +1,19 @@
+app_name = "NumeleAplicatiei";
+
+users = [
+    { name = "Ana", age = 23 },
+    { name = "Bogdan", age = 30 }
+];
+
+#ceva
+
+settings = {
+    mode = "development",
+    logging = true,
+    max users = 100
+};
+
+permissions = [
+    { user = "Ana", rights = ["read", "write"] },
+    { user = "Bogdan", rights = ["read"] }
+];
