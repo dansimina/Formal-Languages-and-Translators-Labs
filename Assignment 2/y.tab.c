@@ -71,24 +71,47 @@
 
     #include <stdio.h>
     #include <string.h>
+    #include <stdbool.h>
 
     char* app_name;
 
-    #define MAX_USERS_CONFIG 100
+    #define MAX_USERS_CONFIG 500
     typedef struct {
         char* name;
         int age;
-    }User;
+    } User;
     User users[MAX_USERS_CONFIG];
     int user_count = 0;
+
+    typedef struct {
+
+    } Setting;
+
+
+    typedef struct {
+        char* user;
+        char* rights[3];
+        int no_of_rights;
+    } Permission;
+    Permission permissions[MAX_USERS_CONFIG];
+    int permission_count = 0;
+
+
+
+    char* mode = "default";
+    bool logging = 0;
+    int max_users = MAX_USERS_CONFIG;
+
 
     int yylex(void);
     void yyerror(const char* str);
 
-    void add_user(char* name, int age);
+    void addUser(char* name, int age);
+    void updateMaxUsers(int number);
+    void addPermission(char* user);
+    void addRight(char* right);
 
-
-#line 92 "y.tab.c"
+#line 115 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -144,15 +167,16 @@ extern int yydebug;
     COMMA = 267,                   /* COMMA  */
     SEMICOLON = 268,               /* SEMICOLON  */
     STRING = 269,                  /* STRING  */
-    BOOL = 270,                    /* BOOL  */
-    NUMBER = 271,                  /* NUMBER  */
-    NAME = 272,                    /* NAME  */
-    AGE = 273,                     /* AGE  */
-    MODE = 274,                    /* MODE  */
-    LOGGING = 275,                 /* LOGGING  */
-    MAX_USERS = 276,               /* MAX_USERS  */
-    USER = 277,                    /* USER  */
-    RIGHTS = 278                   /* RIGHTS  */
+    TRUE = 270,                    /* TRUE  */
+    FALSE = 271,                   /* FALSE  */
+    NUMBER = 272,                  /* NUMBER  */
+    NAME = 273,                    /* NAME  */
+    AGE = 274,                     /* AGE  */
+    MODE = 275,                    /* MODE  */
+    LOGGING = 276,                 /* LOGGING  */
+    MAX_USERS = 277,               /* MAX_USERS  */
+    USER = 278,                    /* USER  */
+    RIGHTS = 279                   /* RIGHTS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -173,26 +197,27 @@ extern int yydebug;
 #define COMMA 267
 #define SEMICOLON 268
 #define STRING 269
-#define BOOL 270
-#define NUMBER 271
-#define NAME 272
-#define AGE 273
-#define MODE 274
-#define LOGGING 275
-#define MAX_USERS 276
-#define USER 277
-#define RIGHTS 278
+#define TRUE 270
+#define FALSE 271
+#define NUMBER 272
+#define NAME 273
+#define AGE 274
+#define MODE 275
+#define LOGGING 276
+#define MAX_USERS 277
+#define USER 278
+#define RIGHTS 279
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 22 "yacc_source.y"
+#line 45 "yacc_source.y"
 
     char* str;
     int number;
 
-#line 196 "y.tab.c"
+#line 221 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -227,21 +252,31 @@ enum yysymbol_kind_t
   YYSYMBOL_COMMA = 12,                     /* COMMA  */
   YYSYMBOL_SEMICOLON = 13,                 /* SEMICOLON  */
   YYSYMBOL_STRING = 14,                    /* STRING  */
-  YYSYMBOL_BOOL = 15,                      /* BOOL  */
-  YYSYMBOL_NUMBER = 16,                    /* NUMBER  */
-  YYSYMBOL_NAME = 17,                      /* NAME  */
-  YYSYMBOL_AGE = 18,                       /* AGE  */
-  YYSYMBOL_MODE = 19,                      /* MODE  */
-  YYSYMBOL_LOGGING = 20,                   /* LOGGING  */
-  YYSYMBOL_MAX_USERS = 21,                 /* MAX_USERS  */
-  YYSYMBOL_USER = 22,                      /* USER  */
-  YYSYMBOL_RIGHTS = 23,                    /* RIGHTS  */
-  YYSYMBOL_YYACCEPT = 24,                  /* $accept  */
-  YYSYMBOL_program = 25,                   /* program  */
-  YYSYMBOL_app_name_line = 26,             /* app_name_line  */
-  YYSYMBOL_users_section = 27,             /* users_section  */
-  YYSYMBOL_users_list = 28,                /* users_list  */
-  YYSYMBOL_user = 29                       /* user  */
+  YYSYMBOL_TRUE = 15,                      /* TRUE  */
+  YYSYMBOL_FALSE = 16,                     /* FALSE  */
+  YYSYMBOL_NUMBER = 17,                    /* NUMBER  */
+  YYSYMBOL_NAME = 18,                      /* NAME  */
+  YYSYMBOL_AGE = 19,                       /* AGE  */
+  YYSYMBOL_MODE = 20,                      /* MODE  */
+  YYSYMBOL_LOGGING = 21,                   /* LOGGING  */
+  YYSYMBOL_MAX_USERS = 22,                 /* MAX_USERS  */
+  YYSYMBOL_USER = 23,                      /* USER  */
+  YYSYMBOL_RIGHTS = 24,                    /* RIGHTS  */
+  YYSYMBOL_YYACCEPT = 25,                  /* $accept  */
+  YYSYMBOL_program = 26,                   /* program  */
+  YYSYMBOL_app_name_line = 27,             /* app_name_line  */
+  YYSYMBOL_users_section = 28,             /* users_section  */
+  YYSYMBOL_users_list = 29,                /* users_list  */
+  YYSYMBOL_user = 30,                      /* user  */
+  YYSYMBOL_settings_section = 31,          /* settings_section  */
+  YYSYMBOL_settings_list = 32,             /* settings_list  */
+  YYSYMBOL_setting = 33,                   /* setting  */
+  YYSYMBOL_bool_val = 34,                  /* bool_val  */
+  YYSYMBOL_permissions_section = 35,       /* permissions_section  */
+  YYSYMBOL_permissions_list = 36,          /* permissions_list  */
+  YYSYMBOL_permission = 37,                /* permission  */
+  YYSYMBOL_rights = 38,                    /* rights  */
+  YYSYMBOL_right = 39                      /* right  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -569,19 +604,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  5
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   28
+#define YYLAST   65
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  24
+#define YYNTOKENS  25
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  6
+#define YYNNTS  15
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  7
+#define YYNRULES  24
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  27
+#define YYNSTATES  73
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   278
+#define YYMAXUTOK   279
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -622,14 +657,16 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    38,    38,    41,    44,    47,    48,    51
+       0,    61,    61,    64,    67,    70,    71,    74,    77,    80,
+      81,    84,    85,    86,    87,    90,    91,    94,    95,    98,
+      99,   102,   105,   106,   109
 };
 #endif
 
@@ -647,10 +684,12 @@ static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "APP_NAME", "USERS",
   "SETTINGS", "PERMISSIONS", "EQUALS", "OPEN_BRACE", "CLOSED_BRACE",
-  "LIST_START", "LIST_END", "COMMA", "SEMICOLON", "STRING", "BOOL",
-  "NUMBER", "NAME", "AGE", "MODE", "LOGGING", "MAX_USERS", "USER",
+  "LIST_START", "LIST_END", "COMMA", "SEMICOLON", "STRING", "TRUE",
+  "FALSE", "NUMBER", "NAME", "AGE", "MODE", "LOGGING", "MAX_USERS", "USER",
   "RIGHTS", "$accept", "program", "app_name_line", "users_section",
-  "users_list", "user", YY_NULLPTR
+  "users_list", "user", "settings_section", "settings_list", "setting",
+  "bool_val", "permissions_section", "permissions_list", "permission",
+  "rights", "right", YY_NULLPTR
 };
 
 static const char *
@@ -660,7 +699,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-12)
+#define YYPACT_NINF (-33)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -674,9 +713,14 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -1,    -4,     4,     1,    -8,   -12,     0,   -12,    -5,     2,
-     -12,     3,    -7,   -11,   -12,     6,     5,     3,     7,   -12,
-     -12,    -3,    -2,     8,     9,    10,   -12
+      10,     7,    15,    12,     3,   -33,    11,    14,     8,    13,
+      17,    16,   -33,    18,    19,    21,   -33,     2,   -10,   -33,
+     -16,    20,    22,    23,    18,    24,    25,    26,    -9,   -33,
+      27,    28,   -33,   -33,    29,    -8,    30,    31,   -16,    32,
+      -2,   -33,    33,   -33,   -33,   -33,   -33,   -33,   -33,   -33,
+      34,    35,    27,     6,    36,   -33,   -33,    39,    37,    40,
+      38,    42,    45,   -33,    43,    44,   -33,     0,   -33,    47,
+      44,   -33,   -33
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -684,21 +728,28 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     0,     0,     1,     0,     2,     0,     0,
-       3,     0,     0,     0,     5,     0,     0,     0,     0,     4,
-       6,     0,     0,     0,     0,     0,     7
+       0,     0,     0,     0,     0,     1,     0,     0,     0,     0,
+       0,    18,     3,     0,     0,     0,     2,     0,     0,     5,
+      14,     0,     0,     0,     0,     0,     0,     0,     0,     9,
+       0,     0,     4,     6,     0,     0,     0,     0,    14,     0,
+       0,    19,     0,    11,    15,    16,    12,    13,     8,    10,
+       0,     0,     0,     0,     0,    17,    20,     0,     0,     0,
+       0,     0,     0,     7,     0,     0,    24,     0,    22,     0,
+       0,    21,    23
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -12,   -12,   -12,   -12,   -12,    11
+     -33,   -33,   -33,   -33,   -33,    41,   -33,   -33,    -4,   -33,
+     -33,   -33,   -15,   -33,   -32
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2,     3,     7,    13,    14
+       0,     2,     3,     7,    18,    19,    11,    28,    29,    46,
+      16,    40,    41,    67,    68
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -706,37 +757,54 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      16,    17,     1,     4,     5,     6,     8,     9,    10,    22,
-      15,    12,    11,    18,     0,    24,    23,     0,    19,    26,
-       0,    21,     0,     0,     0,    25,     0,     0,    20
+      37,    23,    24,    38,    25,    26,    27,    44,    45,    51,
+      52,    69,    70,     1,     4,     5,     6,     8,     9,    10,
+      22,    12,    15,    13,    14,    57,    17,    20,    21,    31,
+      30,    34,    35,    36,    49,    39,    32,    56,    72,     0,
+       0,    54,    42,    43,    48,    53,    59,    47,    55,    60,
+      58,    63,    64,    65,     0,    50,    71,    61,    66,     0,
+       0,     0,    62,     0,     0,    33
 };
 
 static const yytype_int8 yycheck[] =
 {
-      11,    12,     3,     7,     0,     4,    14,     7,    13,    12,
-      17,     8,    10,     7,    -1,     7,    18,    -1,    13,     9,
-      -1,    14,    -1,    -1,    -1,    16,    -1,    -1,    17
+       9,    11,    12,    12,    20,    21,    22,    15,    16,    11,
+      12,    11,    12,     3,     7,     0,     4,    14,     7,     5,
+      18,    13,     6,    10,     7,    19,     8,     8,     7,     7,
+      10,     7,     7,     7,    38,     8,    13,    52,    70,    -1,
+      -1,     7,    14,    14,    13,    12,     7,    17,    13,    12,
+      14,     9,     7,    10,    -1,    23,     9,    17,    14,    -1,
+      -1,    -1,    24,    -1,    -1,    24
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    25,    26,     7,     0,     4,    27,    14,     7,
-      13,    10,     8,    28,    29,    17,    11,    12,     7,    13,
-      29,    14,    12,    18,     7,    16,     9
+       0,     3,    26,    27,     7,     0,     4,    28,    14,     7,
+       5,    31,    13,    10,     7,     6,    35,     8,    29,    30,
+       8,     7,    18,    11,    12,    20,    21,    22,    32,    33,
+      10,     7,    13,    30,     7,     7,     7,     9,    12,     8,
+      36,    37,    14,    14,    15,    16,    34,    17,    13,    33,
+      23,    11,    12,    12,     7,    13,    37,    19,    14,     7,
+      12,    17,    24,     9,     7,    10,    14,    38,    39,    11,
+      12,     9,    39
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    24,    25,    26,    27,    28,    28,    29
+       0,    25,    26,    27,    28,    29,    29,    30,    31,    32,
+      32,    33,    33,    33,    33,    34,    34,    35,    35,    36,
+      36,    37,    38,    38,    39
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     2,     4,     6,     1,     3,     9
+       0,     2,     4,     4,     6,     1,     3,     9,     6,     1,
+       3,     3,     3,     3,     0,     1,     1,     6,     0,     1,
+       3,    11,     1,     3,     1
 };
 
 
@@ -1200,19 +1268,55 @@ yyreduce:
   switch (yyn)
     {
   case 3: /* app_name_line: APP_NAME EQUALS STRING SEMICOLON  */
-#line 41 "yacc_source.y"
+#line 64 "yacc_source.y"
                                                                     { app_name = strdup((yyvsp[-1].str)); }
-#line 1206 "y.tab.c"
+#line 1274 "y.tab.c"
     break;
 
   case 7: /* user: OPEN_BRACE NAME EQUALS STRING COMMA AGE EQUALS NUMBER CLOSED_BRACE  */
-#line 51 "yacc_source.y"
-                                                                                  { add_user((yyvsp[-5].str), (yyvsp[-1].number)); }
-#line 1212 "y.tab.c"
+#line 74 "yacc_source.y"
+                                                                                  { addUser((yyvsp[-5].str), (yyvsp[-1].number)); }
+#line 1280 "y.tab.c"
+    break;
+
+  case 11: /* setting: MODE EQUALS STRING  */
+#line 84 "yacc_source.y"
+                                    { mode = strdup((yyvsp[0].str)); }
+#line 1286 "y.tab.c"
+    break;
+
+  case 13: /* setting: MAX_USERS EQUALS NUMBER  */
+#line 86 "yacc_source.y"
+                                    { updateMaxUsers((yyvsp[0].number)); }
+#line 1292 "y.tab.c"
+    break;
+
+  case 15: /* bool_val: TRUE  */
+#line 90 "yacc_source.y"
+                { logging = true; }
+#line 1298 "y.tab.c"
+    break;
+
+  case 16: /* bool_val: FALSE  */
+#line 91 "yacc_source.y"
+                 { logging = false; }
+#line 1304 "y.tab.c"
+    break;
+
+  case 21: /* permission: OPEN_BRACE USER EQUALS STRING COMMA RIGHTS EQUALS LIST_START rights LIST_END CLOSED_BRACE  */
+#line 102 "yacc_source.y"
+                                                                                                      { addPermission((yyvsp[-7].str)); }
+#line 1310 "y.tab.c"
+    break;
+
+  case 24: /* right: STRING  */
+#line 109 "yacc_source.y"
+                { addRight((yyvsp[0].str)); }
+#line 1316 "y.tab.c"
     break;
 
 
-#line 1216 "y.tab.c"
+#line 1320 "y.tab.c"
 
       default: break;
     }
@@ -1405,7 +1509,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 55 "yacc_source.y"
+#line 112 "yacc_source.y"
 
 
 int main() {
@@ -1418,6 +1522,17 @@ int main() {
         printf("User: %s %d\n", users[i].name, users[i].age);
     }
 
+    printf("Mode: %s\n", mode);
+    printf("Logging: %s\n", logging ? "true" : "false");
+    printf("Max users: %d\n", max_users);
+
+    for(int i = 0; i < permission_count; i++) {
+        printf("User: %s\n", permissions[i].user);
+        for(int j = 0; j < permissions[i].no_of_rights; j++) {
+            printf("  Right: %s\n", permissions[i].rights[j]);
+        }
+    }
+
     return 0;
 }
 
@@ -1425,12 +1540,37 @@ void yyerror(const char* str) {
     fprintf(stderr, "Syntax error: %s\n", str);
 }
 
-void add_user(char* name, int age) {
-        if (user_count < MAX_USERS_CONFIG) {
-            users[user_count].name = strdup(name);
-            users[user_count].age = age;
-            user_count++;
-        } else {
-            fprintf(stderr, "Max user limit reached\n");
-        }
+void addUser(char* name, int age) {
+    if (user_count < max_users) {
+        users[user_count].name = strdup(name);
+        users[user_count].age = age;
+        user_count++;
+    } else {
+        yyerror("Max user limit reached\n");
     }
+}
+
+void updateMaxUsers(int number) {
+    if(number <= MAX_USERS_CONFIG) {
+        max_users = number;
+    }
+    else {
+        yyerror("Max user limit reached\n");
+    }
+}
+
+void addPermission(char* user) {
+    permissions[permission_count].user = strdup(user);
+    permission_count++;
+}
+
+void addRight(char* right) {
+    int idx = permission_count;
+    printf("ceva %d\n", permission_count);
+    if (idx >= 0 && permissions[idx].no_of_rights < 3) {
+        permissions[idx].rights[permissions[idx].no_of_rights++] = strdup(right);
+    } else {
+        yyerror("Cannot add right: invalid permission index or max rights reached\n");
+    }
+    printf("alteceva %d\n", permissions[idx].no_of_rights);
+}

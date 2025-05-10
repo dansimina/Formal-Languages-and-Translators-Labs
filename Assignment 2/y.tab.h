@@ -66,15 +66,16 @@ extern int yydebug;
     COMMA = 267,                   /* COMMA  */
     SEMICOLON = 268,               /* SEMICOLON  */
     STRING = 269,                  /* STRING  */
-    BOOL = 270,                    /* BOOL  */
-    NUMBER = 271,                  /* NUMBER  */
-    NAME = 272,                    /* NAME  */
-    AGE = 273,                     /* AGE  */
-    MODE = 274,                    /* MODE  */
-    LOGGING = 275,                 /* LOGGING  */
-    MAX_USERS = 276,               /* MAX_USERS  */
-    USER = 277,                    /* USER  */
-    RIGHTS = 278                   /* RIGHTS  */
+    TRUE = 270,                    /* TRUE  */
+    FALSE = 271,                   /* FALSE  */
+    NUMBER = 272,                  /* NUMBER  */
+    NAME = 273,                    /* NAME  */
+    AGE = 274,                     /* AGE  */
+    MODE = 275,                    /* MODE  */
+    LOGGING = 276,                 /* LOGGING  */
+    MAX_USERS = 277,               /* MAX_USERS  */
+    USER = 278,                    /* USER  */
+    RIGHTS = 279                   /* RIGHTS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -95,26 +96,27 @@ extern int yydebug;
 #define COMMA 267
 #define SEMICOLON 268
 #define STRING 269
-#define BOOL 270
-#define NUMBER 271
-#define NAME 272
-#define AGE 273
-#define MODE 274
-#define LOGGING 275
-#define MAX_USERS 276
-#define USER 277
-#define RIGHTS 278
+#define TRUE 270
+#define FALSE 271
+#define NUMBER 272
+#define NAME 273
+#define AGE 274
+#define MODE 275
+#define LOGGING 276
+#define MAX_USERS 277
+#define USER 278
+#define RIGHTS 279
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 22 "yacc_source.y"
+#line 45 "yacc_source.y"
 
     char* str;
     int number;
 
-#line 118 "y.tab.h"
+#line 120 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
