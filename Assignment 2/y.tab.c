@@ -84,9 +84,11 @@
     int user_count = 0;
 
     typedef struct {
-
-    } Setting;
-
+        char* mode;
+        bool logging;
+        int max_users; 
+    } Settings;
+    Settings settings;
 
     typedef struct {
         char* user;
@@ -96,12 +98,7 @@
     Permission permissions[MAX_USERS_CONFIG];
     int permission_count = 0;
 
-
-
-    char* mode = "default";
-    bool logging = 0;
-    int max_users = MAX_USERS_CONFIG;
-
+    void init();
 
     int yylex(void);
     void yyerror(const char* str);
@@ -111,7 +108,7 @@
     void addPermission(char* user);
     void addRight(char* right);
 
-#line 115 "y.tab.c"
+#line 112 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -212,12 +209,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 45 "yacc_source.y"
+#line 42 "yacc_source.y"
 
     char* str;
     int number;
 
-#line 221 "y.tab.c"
+#line 218 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -393,7 +390,7 @@ typedef int yytype_uint16;
 
 
 /* Stored state numbers (used for stacks). */
-typedef yytype_int8 yy_state_t;
+typedef yytype_uint8 yy_state_t;
 
 /* State numbers in computations.  */
 typedef int yy_state_fast_t;
@@ -602,18 +599,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  5
+#define YYFINAL  6
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   65
+#define YYLAST   172
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  25
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  15
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  24
+#define YYNRULES  52
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  73
+#define YYNSTATES  140
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   279
@@ -662,11 +659,14 @@ static const yytype_int8 yytranslate[] =
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int8 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    61,    61,    64,    67,    70,    71,    74,    77,    80,
-      81,    84,    85,    86,    87,    90,    91,    94,    95,    98,
-      99,   102,   105,   106,   109
+       0,    58,    58,    59,    62,    63,    66,    67,    68,    69,
+      72,    73,    74,    75,    78,    79,    80,    81,    84,    85,
+      86,    87,    90,    91,    92,    93,    96,    97,    98,    99,
+     100,   101,   104,   105,   108,   109,   110,   111,   112,   115,
+     116,   117,   118,   121,   122,   123,   124,   125,   126,   129,
+     130,   131,   134
 };
 #endif
 
@@ -699,28 +699,34 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-33)
+#define YYPACT_NINF (-76)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-1)
+#define YYTABLE_NINF (-43)
 
 #define yytable_value_is_error(Yyn) \
   0
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-static const yytype_int8 yypact[] =
+static const yytype_int16 yypact[] =
 {
-      10,     7,    15,    12,     3,   -33,    11,    14,     8,    13,
-      17,    16,   -33,    18,    19,    21,   -33,     2,   -10,   -33,
-     -16,    20,    22,    23,    18,    24,    25,    26,    -9,   -33,
-      27,    28,   -33,   -33,    29,    -8,    30,    31,   -16,    32,
-      -2,   -33,    33,   -33,   -33,   -33,   -33,   -33,   -33,   -33,
-      34,    35,    27,     6,    36,   -33,   -33,    39,    37,    40,
-      38,    42,    45,   -33,    43,    44,   -33,     0,   -33,    47,
-      44,   -33,   -33
+      99,   -76,    68,    29,    82,    20,   -76,    85,    92,    11,
+      49,    98,   100,   -76,   -76,     3,     3,    31,   101,   -76,
+      89,     0,    32,   -76,    35,    69,    69,    72,   102,   103,
+     104,    86,    97,    86,    13,    12,   106,   107,   108,    36,
+     -76,    48,    30,    30,   105,   -76,   109,    89,   -76,   -76,
+     -76,   -76,   -76,   -76,     6,     1,     2,    69,   111,    69,
+      59,    14,    93,    -1,    50,   -76,    52,   110,   113,   -76,
+     -76,   -76,   -76,   -76,   -76,   -76,   -76,   -76,   -76,   -76,
+     -76,   -76,   -76,   114,   117,   120,    87,   115,    87,    22,
+      27,   112,   116,   118,   -76,   119,   -76,   -76,   -76,   -76,
+     -76,   -76,   122,   123,   124,   125,   121,   126,    94,    96,
+     130,    75,   127,   133,   -76,   -76,   -76,   131,    73,   128,
+     128,   128,   -76,    54,   -76,    57,    66,   128,   135,   128,
+     136,    -4,    84,   -76,   -76,   -76,   -76,   -76,   -76,   -76
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -728,83 +734,123 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     0,     0,     1,     0,     0,     0,     0,
-       0,    18,     3,     0,     0,     0,     2,     0,     0,     5,
-      14,     0,     0,     0,     0,     0,     0,     0,     0,     9,
-       0,     0,     4,     6,     0,     0,     0,     0,    14,     0,
-       0,    19,     0,    11,    15,    16,    12,    13,     8,    10,
-       0,     0,     0,     0,     0,    17,    20,     0,     0,     0,
-       0,     0,     0,     7,     0,     0,    24,     0,    22,     0,
-       0,    21,    23
+       0,     3,     0,     0,     0,     0,     1,     0,     0,     0,
+       0,     0,    38,     5,     4,     0,     0,     0,     0,     2,
+      12,     0,     0,    10,     0,    22,    22,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+      23,     0,     0,     0,     0,    15,     0,     0,    13,     8,
+      11,     9,     7,     6,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,    39,     0,     0,     0,    27,
+      26,    29,    32,    33,    28,    31,    30,    25,    20,    24,
+      21,    19,    18,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,    44,     0,    41,    36,    40,    37,
+      35,    34,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,    16,    17,    14,     0,     0,     0,
+       0,     0,    52,     0,    49,     0,     0,     0,     0,     0,
+       0,     0,     0,    51,    45,    50,    47,    48,    46,    43
 };
 
 /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int8 yypgoto[] =
+static const yytype_int16 yypgoto[] =
 {
-     -33,   -33,   -33,   -33,   -33,    41,   -33,   -33,    -4,   -33,
-     -33,   -33,   -15,   -33,   -32
+     -76,   -76,   -76,   -76,   132,   -25,   -76,    91,    39,   -76,
+     -76,   129,    15,   -50,   -75
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2,     3,     7,    18,    19,    11,    28,    29,    46,
-      16,    40,    41,    67,    68
+       0,     3,     4,     8,    22,    23,    12,    39,    40,    74,
+      19,    64,    65,   123,   124
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule whose
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int8 yytable[] =
+static const yytype_int16 yytable[] =
 {
-      37,    23,    24,    38,    25,    26,    27,    44,    45,    51,
-      52,    69,    70,     1,     4,     5,     6,     8,     9,    10,
-      22,    12,    15,    13,    14,    57,    17,    20,    21,    31,
-      30,    34,    35,    36,    49,    39,    32,    56,    72,     0,
-       0,    54,    42,    43,    48,    53,    59,    47,    55,    60,
-      58,    63,    64,    65,     0,    50,    71,    61,    66,     0,
-       0,     0,    62,     0,     0,    33
+      84,    29,    71,    75,    20,   137,    48,    69,    50,    48,
+     122,    21,    13,    52,    47,    81,    72,    73,    30,    76,
+      70,    21,    85,    62,    14,    53,    51,    82,   100,     6,
+      63,    62,    25,    31,     9,    99,    34,    57,    63,    26,
+     101,   -42,   -42,    32,    33,    58,    35,    33,    59,    60,
+      15,    86,   133,    89,   135,   127,   133,    61,   127,    16,
+      59,    87,    88,    90,    88,   128,   129,   131,   130,   129,
+     125,   126,    80,    42,   120,     5,   115,   132,   129,    36,
+      37,    38,    43,   121,   116,   138,     7,    47,    62,    36,
+      37,    38,    10,   139,    21,    63,    77,    11,    79,    77,
+       1,    96,     2,    98,    96,    17,    18,    28,    27,    44,
+      49,    46,    45,    54,    55,    56,    83,    41,   112,    67,
+     113,    93,    91,    68,    78,    92,    94,    95,    97,   106,
+     107,   102,   104,   105,   117,   103,   108,   109,   110,   114,
+     118,   119,   122,   111,   134,   136,     0,     0,    24,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,    66
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_int16 yycheck[] =
 {
-       9,    11,    12,    12,    20,    21,    22,    15,    16,    11,
-      12,    11,    12,     3,     7,     0,     4,    14,     7,     5,
-      18,    13,     6,    10,     7,    19,     8,     8,     7,     7,
-      10,     7,     7,     7,    38,     8,    13,    52,    70,    -1,
-      -1,     7,    14,    14,    13,    12,     7,    17,    13,    12,
-      14,     9,     7,    10,    -1,    23,     9,    17,    14,    -1,
-      -1,    -1,    24,    -1,    -1,    24
+       1,     1,     1,     1,     1,     9,    31,     1,    33,    34,
+      14,     8,     1,     1,     1,     1,    15,    16,    18,    17,
+      14,     8,    23,     1,    13,    13,    13,    13,     1,     0,
+       8,     1,     1,     1,    14,    13,     1,     1,     8,     8,
+      13,    11,    12,    11,    12,     9,    11,    12,    12,     1,
+       1,     1,   127,     1,   129,     1,   131,     9,     1,    10,
+      12,    11,    12,    11,    12,    11,    12,     1,    11,    12,
+     120,   121,    13,     1,     1,     7,     1,    11,    12,    20,
+      21,    22,    10,    10,     9,     1,     4,     1,     1,    20,
+      21,    22,     7,     9,     8,     8,    57,     5,    59,    60,
+       1,    86,     3,    88,    89,     7,     6,    18,     7,     7,
+      13,     7,     9,     7,     7,     7,    23,    26,    24,    14,
+      24,     7,    12,    14,    13,    12,     9,     7,    13,     7,
+       7,    19,    14,    14,     7,    19,    12,    12,    17,     9,
+       7,    10,    14,    17,     9,     9,    -1,    -1,    16,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    43
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    26,    27,     7,     0,     4,    28,    14,     7,
-       5,    31,    13,    10,     7,     6,    35,     8,    29,    30,
-       8,     7,    18,    11,    12,    20,    21,    22,    32,    33,
-      10,     7,    13,    30,     7,     7,     7,     9,    12,     8,
-      36,    37,    14,    14,    15,    16,    34,    17,    13,    33,
-      23,    11,    12,    12,     7,    13,    37,    19,    14,     7,
-      12,    17,    24,     9,     7,    10,    14,    38,    39,    11,
-      12,     9,    39
+       0,     1,     3,    26,    27,     7,     0,     4,    28,    14,
+       7,     5,    31,     1,    13,     1,    10,     7,     6,    35,
+       1,     8,    29,    30,    29,     1,     8,     7,    18,     1,
+      18,     1,    11,    12,     1,    11,    20,    21,    22,    32,
+      33,    32,     1,    10,     7,     9,     7,     1,    30,    13,
+      30,    13,     1,    13,     7,     7,     7,     1,     9,    12,
+       1,     9,     1,     8,    36,    37,    36,    14,    14,     1,
+      14,     1,    15,    16,    34,     1,    17,    33,    13,    33,
+      13,     1,    13,    23,     1,    23,     1,    11,    12,     1,
+      11,    12,    12,     7,     9,     7,    37,    13,    37,    13,
+       1,    13,    19,    19,    14,    14,     7,     7,    12,    12,
+      17,    17,    24,    24,     9,     1,     9,     7,     7,    10,
+       1,    10,    14,    38,    39,    38,    38,     1,    11,    12,
+      11,     1,    11,    39,     9,    39,     9,     9,     1,     9
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    25,    26,    27,    28,    29,    29,    30,    31,    32,
-      32,    33,    33,    33,    33,    34,    34,    35,    35,    36,
-      36,    37,    38,    38,    39
+       0,    25,    26,    26,    27,    27,    28,    28,    28,    28,
+      29,    29,    29,    29,    30,    30,    30,    30,    31,    31,
+      31,    31,    32,    32,    32,    32,    33,    33,    33,    33,
+      33,    33,    34,    34,    35,    35,    35,    35,    35,    36,
+      36,    36,    36,    37,    37,    37,    37,    37,    37,    38,
+      38,    38,    39
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     4,     4,     6,     1,     3,     9,     6,     1,
-       3,     3,     3,     3,     0,     1,     1,     6,     0,     1,
-       3,    11,     1,     3,     1
+       0,     2,     4,     1,     4,     4,     6,     6,     6,     6,
+       1,     3,     1,     3,     9,     3,     9,     9,     6,     6,
+       6,     6,     0,     1,     3,     3,     3,     3,     3,     3,
+       3,     3,     1,     1,     6,     6,     6,     6,     0,     1,
+       3,     3,     0,    11,     3,    11,    11,    11,    11,     1,
+       3,     3,     1
 };
 
 
@@ -1267,56 +1313,218 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 3: /* app_name_line: APP_NAME EQUALS STRING SEMICOLON  */
-#line 64 "yacc_source.y"
-                                                                    { app_name = strdup((yyvsp[-1].str)); }
-#line 1274 "y.tab.c"
-    break;
-
-  case 7: /* user: OPEN_BRACE NAME EQUALS STRING COMMA AGE EQUALS NUMBER CLOSED_BRACE  */
-#line 74 "yacc_source.y"
-                                                                                  { addUser((yyvsp[-5].str), (yyvsp[-1].number)); }
-#line 1280 "y.tab.c"
-    break;
-
-  case 11: /* setting: MODE EQUALS STRING  */
-#line 84 "yacc_source.y"
-                                    { mode = strdup((yyvsp[0].str)); }
-#line 1286 "y.tab.c"
-    break;
-
-  case 13: /* setting: MAX_USERS EQUALS NUMBER  */
-#line 86 "yacc_source.y"
-                                    { updateMaxUsers((yyvsp[0].number)); }
-#line 1292 "y.tab.c"
-    break;
-
-  case 15: /* bool_val: TRUE  */
-#line 90 "yacc_source.y"
-                { logging = true; }
-#line 1298 "y.tab.c"
-    break;
-
-  case 16: /* bool_val: FALSE  */
-#line 91 "yacc_source.y"
-                 { logging = false; }
-#line 1304 "y.tab.c"
-    break;
-
-  case 21: /* permission: OPEN_BRACE USER EQUALS STRING COMMA RIGHTS EQUALS LIST_START rights LIST_END CLOSED_BRACE  */
-#line 102 "yacc_source.y"
-                                                                                                      { addPermission((yyvsp[-7].str)); }
-#line 1310 "y.tab.c"
-    break;
-
-  case 24: /* right: STRING  */
-#line 109 "yacc_source.y"
-                { addRight((yyvsp[0].str)); }
-#line 1316 "y.tab.c"
-    break;
-
-
+  case 3: /* program: error  */
+#line 59 "yacc_source.y"
+                        { yyerror("Syntax error in program structure"); YYABORT; }
 #line 1320 "y.tab.c"
+    break;
+
+  case 4: /* app_name_line: APP_NAME EQUALS STRING SEMICOLON  */
+#line 62 "yacc_source.y"
+                                                                    { app_name = strdup((yyvsp[-1].str)); }
+#line 1326 "y.tab.c"
+    break;
+
+  case 5: /* app_name_line: APP_NAME EQUALS STRING error  */
+#line 63 "yacc_source.y"
+                                                                    { yyerror("Missing semicolon after APP_NAME declaration"); YYABORT; }
+#line 1332 "y.tab.c"
+    break;
+
+  case 7: /* users_section: USERS EQUALS LIST_START users_list LIST_END error  */
+#line 67 "yacc_source.y"
+                                                                        { yyerror("Missing semicolon after USERS section"); YYABORT; }
+#line 1338 "y.tab.c"
+    break;
+
+  case 8: /* users_section: USERS EQUALS error users_list LIST_END SEMICOLON  */
+#line 68 "yacc_source.y"
+                                                                        { yyerror("Missing '[' after USERS = "); YYABORT; }
+#line 1344 "y.tab.c"
+    break;
+
+  case 9: /* users_section: USERS EQUALS LIST_START users_list error SEMICOLON  */
+#line 69 "yacc_source.y"
+                                                                        { yyerror("Missing ']' before semicolon in USERS section"); YYABORT; }
+#line 1350 "y.tab.c"
+    break;
+
+  case 12: /* users_list: error  */
+#line 74 "yacc_source.y"
+                   { yyerror("Invalid user in list"); YYABORT; }
+#line 1356 "y.tab.c"
+    break;
+
+  case 13: /* users_list: users_list error user  */
+#line 75 "yacc_source.y"
+                                   { yyerror("Missing comma between users"); YYABORT; }
+#line 1362 "y.tab.c"
+    break;
+
+  case 14: /* user: OPEN_BRACE NAME EQUALS STRING COMMA AGE EQUALS NUMBER CLOSED_BRACE  */
+#line 78 "yacc_source.y"
+                                                                                  { addUser((yyvsp[-5].str), (yyvsp[-1].number)); }
+#line 1368 "y.tab.c"
+    break;
+
+  case 15: /* user: OPEN_BRACE error CLOSED_BRACE  */
+#line 79 "yacc_source.y"
+                                                                                  { yyerror("Invalid user format - expected: {name=\"...\", age=...}"); YYABORT; }
+#line 1374 "y.tab.c"
+    break;
+
+  case 16: /* user: error NAME EQUALS STRING COMMA AGE EQUALS NUMBER CLOSED_BRACE  */
+#line 80 "yacc_source.y"
+                                                                                  { yyerror("Missing '{' at start of user"); YYABORT; }
+#line 1380 "y.tab.c"
+    break;
+
+  case 17: /* user: OPEN_BRACE NAME EQUALS STRING COMMA AGE EQUALS NUMBER error  */
+#line 81 "yacc_source.y"
+                                                                                  { yyerror("Missing '}' at end of user"); YYABORT; }
+#line 1386 "y.tab.c"
+    break;
+
+  case 19: /* settings_section: SETTINGS EQUALS OPEN_BRACE settings_list CLOSED_BRACE error  */
+#line 85 "yacc_source.y"
+                                                                                    { yyerror("Missing semicolon after SETTINGS section"); YYABORT; }
+#line 1392 "y.tab.c"
+    break;
+
+  case 20: /* settings_section: SETTINGS EQUALS error settings_list CLOSED_BRACE SEMICOLON  */
+#line 86 "yacc_source.y"
+                                                                                    { yyerror("Missing '{' after SETTINGS = "); YYABORT; }
+#line 1398 "y.tab.c"
+    break;
+
+  case 21: /* settings_section: SETTINGS EQUALS OPEN_BRACE settings_list error SEMICOLON  */
+#line 87 "yacc_source.y"
+                                                                                    { yyerror("Missing '}' before semicolon in SETTINGS section"); YYABORT; }
+#line 1404 "y.tab.c"
+    break;
+
+  case 25: /* settings_list: settings_list error setting  */
+#line 93 "yacc_source.y"
+                                                { yyerror("Missing comma between settings"); YYABORT; }
+#line 1410 "y.tab.c"
+    break;
+
+  case 26: /* setting: MODE EQUALS STRING  */
+#line 96 "yacc_source.y"
+                                    { settings.mode = strdup((yyvsp[0].str)); }
+#line 1416 "y.tab.c"
+    break;
+
+  case 27: /* setting: MODE EQUALS error  */
+#line 97 "yacc_source.y"
+                                    { yyerror("Invalid value for mode!"); YYABORT;}
+#line 1422 "y.tab.c"
+    break;
+
+  case 29: /* setting: LOGGING EQUALS error  */
+#line 99 "yacc_source.y"
+                                    { yyerror("Invalid value for logging!"); YYABORT;}
+#line 1428 "y.tab.c"
+    break;
+
+  case 30: /* setting: MAX_USERS EQUALS NUMBER  */
+#line 100 "yacc_source.y"
+                                    { updateMaxUsers((yyvsp[0].number)); }
+#line 1434 "y.tab.c"
+    break;
+
+  case 31: /* setting: MAX_USERS EQUALS error  */
+#line 101 "yacc_source.y"
+                                    { yyerror("Invalid value for max_users!"); YYABORT; }
+#line 1440 "y.tab.c"
+    break;
+
+  case 32: /* bool_val: TRUE  */
+#line 104 "yacc_source.y"
+                { settings.logging = true; }
+#line 1446 "y.tab.c"
+    break;
+
+  case 33: /* bool_val: FALSE  */
+#line 105 "yacc_source.y"
+                 { settings.logging = false; }
+#line 1452 "y.tab.c"
+    break;
+
+  case 35: /* permissions_section: PERMISSIONS EQUALS LIST_START permissions_list LIST_END error  */
+#line 109 "yacc_source.y"
+                                                                                        { yyerror("Missing semicolon after PERMISSIONS section"); YYABORT; }
+#line 1458 "y.tab.c"
+    break;
+
+  case 36: /* permissions_section: PERMISSIONS EQUALS error permissions_list LIST_END SEMICOLON  */
+#line 110 "yacc_source.y"
+                                                                                        { yyerror("Missing '[' after PERMISSIONS = "); YYABORT; }
+#line 1464 "y.tab.c"
+    break;
+
+  case 37: /* permissions_section: PERMISSIONS EQUALS LIST_START permissions_list error SEMICOLON  */
+#line 111 "yacc_source.y"
+                                                                                        { yyerror("Missing ']' before semicolon in PERMISSIONS section"); YYABORT; }
+#line 1470 "y.tab.c"
+    break;
+
+  case 41: /* permissions_list: permissions_list error permission  */
+#line 117 "yacc_source.y"
+                                                        { yyerror("Missing comma between permissions"); YYABORT; }
+#line 1476 "y.tab.c"
+    break;
+
+  case 43: /* permission: OPEN_BRACE USER EQUALS STRING COMMA RIGHTS EQUALS LIST_START rights LIST_END CLOSED_BRACE  */
+#line 121 "yacc_source.y"
+                                                                                                        { addPermission((yyvsp[-7].str)); }
+#line 1482 "y.tab.c"
+    break;
+
+  case 44: /* permission: OPEN_BRACE error CLOSED_BRACE  */
+#line 122 "yacc_source.y"
+                                                                                                        { yyerror("Invalid permission format - expected: {user=\"...\", rights=[...]}"); YYABORT; }
+#line 1488 "y.tab.c"
+    break;
+
+  case 45: /* permission: error USER EQUALS STRING COMMA RIGHTS EQUALS LIST_START rights LIST_END CLOSED_BRACE  */
+#line 123 "yacc_source.y"
+                                                                                                        { yyerror("Missing '{' at start of permission"); YYABORT; }
+#line 1494 "y.tab.c"
+    break;
+
+  case 46: /* permission: OPEN_BRACE USER EQUALS STRING COMMA RIGHTS EQUALS LIST_START rights LIST_END error  */
+#line 124 "yacc_source.y"
+                                                                                                        { yyerror("Missing '}' at end of permission"); YYABORT; }
+#line 1500 "y.tab.c"
+    break;
+
+  case 47: /* permission: OPEN_BRACE USER EQUALS STRING COMMA RIGHTS EQUALS error rights LIST_END CLOSED_BRACE  */
+#line 125 "yacc_source.y"
+                                                                                                        { yyerror("Missing '[' after rights = "); YYABORT; }
+#line 1506 "y.tab.c"
+    break;
+
+  case 48: /* permission: OPEN_BRACE USER EQUALS STRING COMMA RIGHTS EQUALS LIST_START rights error CLOSED_BRACE  */
+#line 126 "yacc_source.y"
+                                                                                                        { yyerror("Missing ']' before '}' in permission"); YYABORT; }
+#line 1512 "y.tab.c"
+    break;
+
+  case 51: /* rights: rights error right  */
+#line 131 "yacc_source.y"
+                                { yyerror("Missing comma between rights"); YYABORT; }
+#line 1518 "y.tab.c"
+    break;
+
+  case 52: /* right: STRING  */
+#line 134 "yacc_source.y"
+                { addRight((yyvsp[0].str)); }
+#line 1524 "y.tab.c"
+    break;
+
+
+#line 1528 "y.tab.c"
 
       default: break;
     }
@@ -1509,31 +1717,51 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 112 "yacc_source.y"
+#line 137 "yacc_source.y"
 
 
 int main() {
-    yyparse();
+    init();
 
-    printf("App Name: %s\n", app_name);
+    int result = yyparse();
+    
+    if (result == 0) {
+        printf("Parsing successful!\n\n");
+        
+        printf("App Name: %s\n", app_name);
 
-    printf("Number of users: %d\n", user_count);
-    for(int i = 0; i < user_count; i++) {
-        printf("User: %s %d\n", users[i].name, users[i].age);
-    }
-
-    printf("Mode: %s\n", mode);
-    printf("Logging: %s\n", logging ? "true" : "false");
-    printf("Max users: %d\n", max_users);
-
-    for(int i = 0; i < permission_count; i++) {
-        printf("User: %s\n", permissions[i].user);
-        for(int j = 0; j < permissions[i].no_of_rights; j++) {
-            printf("  Right: %s\n", permissions[i].rights[j]);
+        printf("Number of users: %d\n", user_count);
+        for(int i = 0; i < user_count; i++) {
+            printf("User: %s %d\n", users[i].name, users[i].age);
         }
+
+        printf("Mode: %s\n", settings.mode);
+        printf("Logging: %s\n", settings.logging ? "true" : "false");
+        printf("Max users: %d\n", settings.max_users);
+
+        for(int i = 0; i < permission_count; i++) {
+            printf("User: %s\n", permissions[i].user);
+            for(int j = 0; j < permissions[i].no_of_rights; j++) {
+                printf("  Right: %s\n", permissions[i].rights[j]);
+            }
+        }
+    } else {
+        printf("Parsing failed!\n");
     }
 
-    return 0;
+    return result;
+}
+
+void init() {
+    //init settings
+    settings.mode = "default";
+    settings.logging = false;
+    settings.max_users = MAX_USERS_CONFIG;
+
+    //init permissions
+    for(int i = 0; i < MAX_USERS_CONFIG; i++) {
+        permissions[i].no_of_rights = 0;
+    }
 }
 
 void yyerror(const char* str) {
@@ -1541,36 +1769,67 @@ void yyerror(const char* str) {
 }
 
 void addUser(char* name, int age) {
-    if (user_count < max_users) {
+    if (user_count < settings.max_users) {
         users[user_count].name = strdup(name);
         users[user_count].age = age;
         user_count++;
     } else {
-        yyerror("Max user limit reached\n");
+        yyerror("Max user limit reached");
     }
 }
 
 void updateMaxUsers(int number) {
     if(number <= MAX_USERS_CONFIG) {
-        max_users = number;
+        settings.max_users = number;
     }
     else {
-        yyerror("Max user limit reached\n");
+        yyerror("Max user limit exceeded");
     }
 }
 
+bool isUser(char* user) {
+    for(int i = 0; i < user_count; i++) {
+        if(strcmp(user, users[i].name) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void addPermission(char* user) {
+    if(!isUser(user)) {
+        char buffer[100];
+        sprintf(buffer, "User '%s' doesn't exist!", user);
+        yyerror(buffer);
+        return;
+    }
+
+    for(int i = 0; i < permission_count; i++) {
+        if(strcmp(user, permissions[i].user) == 0) {
+            char buffer[100];
+            sprintf(buffer, "There are duplicate permissions for the user: %s.", user);
+            yyerror(buffer);
+            return;
+        }
+    }
+
     permissions[permission_count].user = strdup(user);
     permission_count++;
 }
 
 void addRight(char* right) {
-    int idx = permission_count;
-    printf("ceva %d\n", permission_count);
-    if (idx >= 0 && permissions[idx].no_of_rights < 3) {
-        permissions[idx].rights[permissions[idx].no_of_rights++] = strdup(right);
-    } else {
-        yyerror("Cannot add right: invalid permission index or max rights reached\n");
+    if(strcmp(right, "read") != 0 && strcmp(right, "write") != 0 && strcmp(right, "execute") != 0) {
+        char buffer[100];
+        sprintf(buffer, "Invalid right '%s'! Must be one of: read, write, execute", right);
+        yyerror(buffer);
+        return;
     }
-    printf("alteceva %d\n", permissions[idx].no_of_rights);
+    
+    for(int i = 0; i < permissions[permission_count].no_of_rights; i++) {
+        if(strcmp(right, permissions[permission_count].rights[i]) == 0) {
+            return;
+        }
+    }
+
+    permissions[permission_count].rights[permissions[permission_count].no_of_rights++] = strdup(right);
 }

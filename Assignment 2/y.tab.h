@@ -111,7 +111,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 45 "yacc_source.y"
+#line 42 "yacc_source.y"
 
     char* str;
     int number;
