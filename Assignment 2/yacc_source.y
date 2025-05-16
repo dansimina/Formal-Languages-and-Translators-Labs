@@ -87,10 +87,10 @@ settings_section: SETTINGS EQUALS OPEN_BRACE settings_list CLOSED_BRACE SEMICOLO
                  | SETTINGS EQUALS OPEN_BRACE settings_list error SEMICOLON         { yyerror("Missing '}' before semicolon in SETTINGS section"); YYABORT; }
                  ;
 
-settings_list: /* empty */
-              | setting
+settings_list: setting
               | settings_list COMMA setting
               | settings_list error setting     { yyerror("Missing comma between settings"); YYABORT; }
+              | /* empty */
               ;
 
 setting: MODE EQUALS STRING         { settings.mode = strdup($3); }
@@ -109,13 +109,13 @@ permissions_section: PERMISSIONS EQUALS LIST_START permissions_list LIST_END SEM
                     | PERMISSIONS EQUALS LIST_START permissions_list LIST_END error     { yyerror("Missing semicolon after PERMISSIONS section"); YYABORT; }
                     | PERMISSIONS EQUALS error permissions_list LIST_END SEMICOLON      { yyerror("Missing '[' after PERMISSIONS = "); YYABORT; }
                     | PERMISSIONS EQUALS LIST_START permissions_list error SEMICOLON    { yyerror("Missing ']' before semicolon in PERMISSIONS section"); YYABORT; }
-                    | /* empty permissions section */
+                    | /* empty */
                     ;
                 
 permissions_list: permission
                  | permissions_list COMMA permission
                  | permissions_list error permission    { yyerror("Missing comma between permissions"); YYABORT; }
-                 | /* empty is allowed for an empty list */
+                 | /* empty */
                  ;
 
 permission: OPEN_BRACE USER EQUALS STRING COMMA RIGHTS EQUALS LIST_START rights LIST_END CLOSED_BRACE   { addPermission($4); }

@@ -34,7 +34,7 @@
 
 "mode"          return MODE;
 "logging"       return LOGGING;
-"max users"     return MAX_USERS;
+"max_users"     return MAX_USERS;
 "true"          return TRUE;
 "false"         return FALSE;
 

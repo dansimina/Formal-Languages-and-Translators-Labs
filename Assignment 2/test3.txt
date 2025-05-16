@@ -1,0 +1,9 @@
+app_name = "TestApp";
+users = [
+  {name = "John", age = 20},
+  {name = "Alice"} # missing age
+];
+settings = {
+  mode = "production",
+  logging = maybe # invalid value
+};

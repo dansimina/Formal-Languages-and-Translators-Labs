@@ -1,0 +1,10 @@
+app_name = "TestApp";
+users = [
+  { name = "John", age = 20 },
+  { name = "Alice", age = 25 }
+];
+settings = {
+  mode = "production",
+  logging = false,
+  max_users = 200
+;

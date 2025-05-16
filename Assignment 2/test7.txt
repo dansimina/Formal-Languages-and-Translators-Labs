@@ -15,5 +15,5 @@ settings = {
 
 permissions = [
     { user = "Ana", rights = ["read", "write"] },
-    { user = "Bogdan", rights = ["read"] }
+    { user = "Bogdan", rights = ["read", "default"] }
 ];
